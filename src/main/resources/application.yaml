@@ -1,0 +1,64 @@
+backbase:
+  custom-segment-sample:
+    segments:
+      definitions:
+        - name: Cards
+          options:
+            - Credit card
+            - Debit card
+        - name: Loans
+          options:
+            - Personal loan
+            - Auto loan
+            - Refinancing
+        - name: Pocket status
+          options:
+            - Completed
+            - Partially completed
+            - Not started
+        - name: Customer plan
+          options:
+            - Young professional
+            - Affluent
+            - Family parent
+            - Family junior
+        - name: Age
+          options:
+            - Below 18
+            - From 18 to 25
+            - From 25 to 40
+            - From 40 to 55
+            - Above 55
+        - name: Credit score
+          options:
+            - Excellent
+            - Good
+            - Fair
+            - Low
+    csv:
+      delimiter: ';'
+      headers:
+        userId: Customer_Num
+        category: Category
+        sub-category: Sub_Category
+  security:
+    public:
+      paths:
+        - /upload
+
+logging:
+  level:
+    com.backbase.sample.segmentation: info
+
+spring:
+  liquibase:
+    enabled: false
+    change-log: classpath:/db/changelog/db.changelog-persistence.xml
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        order_inserts: true
+        order_updates: true
+        jdbc:
+          batch_size: 100

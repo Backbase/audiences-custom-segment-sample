@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.25.xsd">
+
+    <changeSet id="2024.09_001" context="initial_2024_09" author="backbase">
+        <createSequence sequenceName="seq_recommendation" startValue="1" incrementBy="1"/>
+    </changeSet>
+
+    <changeSet id="2024.09_002" context="initial_2024_09" author="backbase">
+        <createTable tableName="recommendation">
+            <column name="id" type="${column.type.bigint}" autoIncrement="false">
+                <constraints primaryKey="true" primaryKeyName="pk_rec" validatePrimaryKey="true"/>
+            </column>
+            <column name="created_at" type="${column.type.dateTime}">
+                <constraints
+                    nullable="false" notNullConstraintName="nn_rec_02" validateNullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2024.09_003" context="initial_2024_09" author="backbase">
+        <createSequence sequenceName="seq_recommendation_entry" startValue="1" incrementBy="50"/>
+    </changeSet>
+
+    <changeSet id="2024.09_004" context="initial_2024_09" author="backbase">
+        <createTable tableName="recommendation_entry">
+            <column name="id" type="${column.type.bigint}" autoIncrement="false">
+                <constraints primaryKey="true" primaryKeyName="pk_rec_entry" validatePrimaryKey="true"/>
+            </column>
+            <column name="recommendation_id" type="${column.type.bigint}">
+                <constraints
+                    nullable="false" notNullConstraintName="nn_rec_entry_02" validateNullable="true"/>
+            </column>
+            <column name="user_external_id" type="${column.type.varchar}(64)">
+                <constraints nullable="false" notNullConstraintName="nn_rec_entry_03" validateNullable="true"/>
+            </column>
+            <column name="category" type="${column.type.varchar}(255)">
+                <constraints nullable="false" notNullConstraintName="nn_rec_entry_04" validateNullable="true"/>
+            </column>
+            <column name="sub_category" type="${column.type.varchar}(255)">
+                <constraints nullable="false" notNullConstraintName="nn_rec_entry_05" validateNullable="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="2024.09_005" context="initial_2024_09" author="backbase">
+        <addForeignKeyConstraint
+            baseTableName="recommendation_entry"
+            baseColumnNames="recommendation_id"
+            constraintName="fk_rec_entry_02"
+            referencedTableName="recommendation"
+            referencedColumnNames="id"
+        />
+    </changeSet>
+</databaseChangeLog>

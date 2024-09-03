@@ -1,0 +1,22 @@
+eureka:
+  client:
+    enabled: false
+
+spring:
+  liquibase:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: validate
+
+  cloud:
+    discovery:
+      client:
+        simple:
+          instances:
+            token-converter:
+              - uri: http://localhost:18080
+            user-manager:
+              - uri: http://localhost:18081
+            user-segment:
+              - uri: http://localhost:18082

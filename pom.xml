@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.backbase.buildingblocks</groupId>
+        <artifactId>service-sdk-starter-core</artifactId>
+        <version>17.1.0</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.backbase.sample</groupId>
+    <artifactId>custom-segment-sample</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <name>audiences-custom-segment-sample</name>
+    <description>audiences-custom-segment-sample</description>
+
+    <properties>
+        <boat-maven-plugin.version>0.17.42</boat-maven-plugin.version>
+        <commons-csv.version>1.11.0</commons-csv.version>
+        <user-manager.version>4.0.8</user-manager.version>
+        <user-manager-service-api.file-name>user-manager-service-api-v${user-manager-service-api.version}.yaml</user-manager-service-api.file-name>
+        <user-manager-service-api.version>2.11.1</user-manager-service-api.version>
+        <user-segment.version>4.2.0</user-segment.version>
+        <user-segment-service-api.file-name>user-segment-service-api-v${user-segment-service-api.version}.yaml</user-segment-service-api.file-name>
+        <user-segment-service-api.version>1.4.0</user-segment-service-api.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.backbase.buildingblocks</groupId>
+            <artifactId>communication</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>${commons-csv.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.liquibase</groupId>
+            <artifactId>liquibase-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.backbase.buildingblocks</groupId>
+            <artifactId>service-sdk-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-testcontainers</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mssqlserver</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.backbase.oss</groupId>
+                <artifactId>boat-maven-plugin</artifactId>
+                <version>${boat-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-user-manager-service-api-code</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate-rest-template-embedded</goal>
+                        </goals>
+                        <configuration>
+                            <inputMavenArtifact>
+                                <groupId>com.backbase.dbs.user</groupId>
+                                <artifactId>user-manager</artifactId>
+                                <version>${user-manager.version}</version>
+                                <classifier>api</classifier>
+                                <type>zip</type>
+                                <fileName>${user-manager-service-api.file-name}</fileName>
+                            </inputMavenArtifact>
+                            <apiPackage>com.backbase.openapi.usermanager.v2</apiPackage>
+                            <modelPackage>com.backbase.openapi.usermanager.v2.model</modelPackage>
+                            <configOptions>
+                                <openApiNullable>false</openApiNullable>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+
+                    <execution>
+                        <id>generate-user-segment-service-api-code</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>generate-rest-template-embedded</goal>
+                        </goals>
+                        <configuration>
+                            <inputMavenArtifact>
+                                <groupId>com.backbase.usersegment</groupId>
+                                <artifactId>user-segment</artifactId>
+                                <version>${user-segment.version}</version>
+                                <classifier>api</classifier>
+                                <type>zip</type>
+                                <fileName>${user-segment-service-api.file-name}</fileName>
+                            </inputMavenArtifact>
+                            <apiPackage>com.backbase.openapi.usersegment.v1</apiPackage>
+                            <modelPackage>com.backbase.openapi.usersegment.v1.model</modelPackage>
+                            <configOptions>
+                                <openApiNullable>false</openApiNullable>
+                            </configOptions>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
